@@ -6,12 +6,29 @@ import { takeUntil } from 'rxjs/operators';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 
+//journalcomponentts
+import { ActivatedRoute, Data, ParamMap } from '@angular/router';
+import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IJournal } from '../entities/journal/journal.model';
+import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { EntityArrayResponseType, JournalService } from '../entities/journal/service/journal.service';
+import { JournalDeleteDialogComponent } from '../entities/journal/delete/journal-delete-dialog.component';
+import { DataUtils } from 'app/core/util/data-util.service';
+import { SortService } from 'app/shared/sort/sort.service';
+
 @Component({
   selector: 'jhi-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  //journalcomponentts
+  journals?: IJournal[];
+  isLoading = false;
+  predicate = 'id';
+  ascending = true;
+
   account: Account | null = null;
 
   private readonly destroy$ = new Subject<void>();

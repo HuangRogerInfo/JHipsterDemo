@@ -1,0 +1,20 @@
+entity Article {
+	title String required
+    description TextBlob
+    content TextBlob required
+    date Instant required
+}
+
+entity Journal{
+	title String required
+    description TextBlob required
+}
+
+relationship OneToMany {
+	Journal to Article{journal},
+}
+
+paginate Article with infinite-scroll
+
+// Set service options to all except few
+service all with serviceImpl

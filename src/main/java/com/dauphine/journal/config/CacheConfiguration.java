@@ -48,6 +48,9 @@ public class CacheConfiguration {
             createCache(cm, com.dauphine.journal.domain.User.class.getName());
             createCache(cm, com.dauphine.journal.domain.Authority.class.getName());
             createCache(cm, com.dauphine.journal.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.dauphine.journal.domain.Article.class.getName());
+            createCache(cm, com.dauphine.journal.domain.Journal.class.getName());
+            createCache(cm, com.dauphine.journal.domain.Journal.class.getName() + ".articles");
             // jhipster-needle-ehcache-add-entry
         };
     }

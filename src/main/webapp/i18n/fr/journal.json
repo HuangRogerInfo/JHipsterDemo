@@ -1,0 +1,26 @@
+{
+  "jhipsterDemoApp": {
+    "journal": {
+      "home": {
+        "title": "Journals",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Journal",
+        "createOrEditLabel": "Créer ou éditer un Journal",
+        "notFound": "Aucun Journal trouvé"
+      },
+      "created": "Un nouveau Journal a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Journal avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Journal avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Journal {{ id }} ?"
+      },
+      "detail": {
+        "title": "Journal"
+      },
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "article": "Article"
+    }
+  }
+}

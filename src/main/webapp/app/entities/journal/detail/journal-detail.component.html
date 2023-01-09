@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="journal">
+      <h2 data-cy="journalDetailsHeading"><span jhiTranslate="jhipsterDemoApp.journal.detail.title">Journal</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ journal.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="jhipsterDemoApp.journal.title">Title</span></dt>
+        <dd>
+          <span>{{ journal.title }}</span>
+        </dd>
+        <dt><span jhiTranslate="jhipsterDemoApp.journal.description">Description</span></dt>
+        <dd>
+          <span>{{ journal.description }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/journal', journal.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
+  </div>
+</div>
