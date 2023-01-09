@@ -12,6 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-article"
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
         [routerLink]="['/article/new']"
       >
         <fa-icon icon="plus"></fa-icon>
@@ -90,7 +91,7 @@
               <a [routerLink]="['/journal', article.journal.id, 'view']">{{ article.journal.id }}</a>
             </div>
           </td>
-          <td class="text-end">
+          <td class="text-end" *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <div class="btn-group">
               <button
                 type="submit"

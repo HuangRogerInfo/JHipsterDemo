@@ -20,9 +20,8 @@
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="papier" (click)="collapseNavbar()">
+          <a class="nav-link" routerLink="article" (click)="collapseNavbar()">
             <span>
-              <fa-icon icon="file"></fa-icon>
               <span>Articles</span>
             </span>
           </a>
