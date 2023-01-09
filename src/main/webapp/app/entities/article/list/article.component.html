@@ -1,126 +1,72 @@
-<div>
-  <h2 id="page-heading" data-cy="ArticleHeading">
-    <span jhiTranslate="jhipsterDemoApp.article.home.title">Articles</span>
+<div class="container">
+  <div class="columns">
+    <div class="column">
+      <div class="box">
+        <div class="columns">
+          <div class="column">
+            <nav class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  <h1 class="title">Journal intime</h1>
+                </div>
+              </div>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="jhipsterDemoApp.article.home.refreshListLabel">Actualiser la liste</span>
-      </button>
+              <div class="level-right">
+                <div class="level-item">
+                  <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+                    <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+                    <span jhiTranslate="jhipsterDemoApp.article.home.refreshListLabel">Actualiser la liste</span>
+                  </button>
+                </div>
+                <div class="level-item">
+                  <button
+                    id="jh-create-entity"
+                    data-cy="entityCreateButton"
+                    class="btn btn-primary jh-create-entity create-article"
+                    *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                    [routerLink]="['/article/new']"
+                  >
+                    <fa-icon icon="plus"></fa-icon>
+                    <span jhiTranslate="jhipsterDemoApp.article.home.createLabel"> Créer un nouveau Article </span>
+                  </button>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-article"
-        *jhiHasAnyAuthority="'ROLE_ADMIN'"
-        [routerLink]="['/article/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="jhipsterDemoApp.article.home.createLabel"> Créer un nouveau Article </span>
-      </button>
+        <div class="columns is-multiline is-mobile">
+          <div *ngFor="let article of articles; trackBy: trackId" class="column is-6">
+            <div class="card">
+              <div class="card-content">
+                <div class="content">
+                  <p class="heading is-size-6">{{ article.title }}</p>
+                  <table class="table is-bordered">
+                    <tbody>
+                      <tr>
+                        <th>Description</th>
+                        <td>{{ article.description }}</td>
+                      </tr>
+                      <tr>
+                        <th>Date</th>
+                        <td>{{ article.date | formatMediumDatetime }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  {{ article.content }}
+                </div>
+              </div>
+              <footer class="card-footer">
+                <a class="card-footer-item" [routerLink]="['/article', article.id, 'view']">See</a>
+                <a *jhiHasAnyAuthority="'ROLE_ADMIN'" class="card-footer-item" [routerLink]="['/article', article.id, 'edit']">Edit</a>
+                <a *jhiHasAnyAuthority="'ROLE_ADMIN'" (click)="delete(article)" data-cy="entityDeleteButton" class="card-footer-item"
+                  >Delete</a
+                >
+              </footer>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </h2>
-
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="articles?.length === 0">
-    <span jhiTranslate="jhipsterDemoApp.article.home.notFound">Aucun Article trouvé</span>
-  </div>
-
-  <div class="table-responsive table-entities" id="entities" *ngIf="articles && articles.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span jhiTranslate="global.field.id">ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="title">
-            <div class="d-flex">
-              <span jhiTranslate="jhipsterDemoApp.article.title">Title</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="description">
-            <div class="d-flex">
-              <span jhiTranslate="jhipsterDemoApp.article.description">Description</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="content">
-            <div class="d-flex">
-              <span jhiTranslate="jhipsterDemoApp.article.content">Content</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="date">
-            <div class="d-flex">
-              <span jhiTranslate="jhipsterDemoApp.article.date">Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="journal.id">
-            <div class="d-flex">
-              <span jhiTranslate="jhipsterDemoApp.article.journal">Journal</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody
-        infinite-scroll
-        (scrolled)="loadPage(page + 1)"
-        [infiniteScrollDisabled]="page - 1 >= links['last']"
-        [infiniteScrollDistance]="0"
-      >
-        <tr *ngFor="let article of articles; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/article', article.id, 'view']">{{ article.id }}</a>
-          </td>
-          <td>{{ article.title }}</td>
-          <td>{{ article.description }}</td>
-          <td>{{ article.content }}</td>
-          <td>{{ article.date | formatMediumDatetime }}</td>
-          <td>
-            <div *ngIf="article.journal">
-              <a [routerLink]="['/journal', article.journal.id, 'view']">{{ article.journal.id }}</a>
-            </div>
-          </td>
-          <td class="text-end" *jhiHasAnyAuthority="'ROLE_ADMIN'">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/article', article.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/article', article.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
-
-              <button type="submit" (click)="delete(article)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </div>
